@@ -1,0 +1,26 @@
+{
+    "name": "doekenorg/iterator-functions",
+    "description": "A package that provides array_* like functions for iterators.",
+    "type": "library",
+    "require": {
+        "php": "^7.4|^8.0"
+    },
+    "require-dev": {
+        "pestphp/pest": "^1.15"
+    },
+    "autoload": {
+        "psr-4": {
+            "DoekeNorg\\IteratorFunctions\\": "src"
+        },
+        "files": [
+            "functions.php"
+        ]
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Doeke Norg",
+            "email": "doekenorg@gmail.com"
+        }
+    ]
+}
