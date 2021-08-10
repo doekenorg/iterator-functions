@@ -89,7 +89,7 @@ if (!function_exists('iterator_values')) {
      * Returns an iterator that produces only the values of the inner iterator.
      * @since $ver$
      * @param Iterator $iterator The iterator to get the keys from.
-     * @return KeysIterator Iterator that produces the values.
+     * @return ValuesIterator Iterator that produces the values.
      */
     function iterator_values(\Iterator $iterator): ValuesIterator
     {
