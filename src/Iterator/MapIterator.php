@@ -17,7 +17,14 @@ class MapIterator extends \IteratorIterator
     private $callback;
 
     /**
+     * @var \Iterator|string
+     */
+    private $iterators;
+
+    /**
      * @inheritdoc
+     * @param callable $callback
+     * @param \Iterator ...$iterators
      * @since $ver$
      * @throws \ReflectionException
      */
@@ -36,6 +43,7 @@ class MapIterator extends \IteratorIterator
         parent::__construct($inner);
 
         $this->callback = $callback;
+        $this->iterators = $iterators;
     }
 
     /**
