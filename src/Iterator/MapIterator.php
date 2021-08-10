@@ -3,30 +3,24 @@
 namespace DoekeNorg\IteratorFunctions\Iterator;
 
 /**
- *
- *
+ * Iterator that applies a callback to the elements of the given iterators. *
  * @since $ver$
  */
 class MapIterator extends \IteratorIterator
 {
     /**
-     * The callback to use for every iteration.
+     * Callback function to run for each element in each iterator.
      * @since $ver$
      * @var callable
      */
     private $callback;
 
     /**
-     * @var \Iterator|string
-     */
-    private $iterators;
-
-    /**
-     * @inheritdoc
-     * @param callable $callback
-     * @param \Iterator ...$iterators
+     * Returns the iterator.
+     * @param callable $callback Callback function to run for each element in each iterator.
+     * @param \Iterator ...$iterators Any iterator to apply the callback on.
      * @since $ver$
-     * @throws \ReflectionException
+     * @throws \ReflectionException When the callback could not be reflected.
      */
     public function __construct(callable $callback, \Iterator ...$iterators)
     {
@@ -43,7 +37,6 @@ class MapIterator extends \IteratorIterator
         parent::__construct($inner);
 
         $this->callback = $callback;
-        $this->iterators = $iterators;
     }
 
     /**
