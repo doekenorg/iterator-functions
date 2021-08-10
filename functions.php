@@ -1,5 +1,6 @@
 <?php
 
+use DoekeNorg\IteratorFunctions\Iterator\FlipIterator;
 use DoekeNorg\IteratorFunctions\Iterator\KeysIterator;
 use DoekeNorg\IteratorFunctions\Iterator\MapIterator;
 use DoekeNorg\IteratorFunctions\Iterator\ValuesIterator;
@@ -18,6 +19,19 @@ if (!function_exists('iterator_filter')) {
     function iterator_filter(Iterator $iterator, ?callable $callback = null): \CallbackFilterIterator
     {
         return new \CallbackFilterIterator($iterator, $callback ?? static fn($value) => !empty($value));
+    }
+}
+
+if (!function_exists('iterator_flip')) {
+    /**
+     * Flips the key and value of an iteration.
+     * @since $ver$
+     * @param Iterator $iterator The iterator to flip.
+     * @return FlipIterator Iterator with flipped values and keys.
+     */
+    function iterator_flip(Iterator $iterator): FlipIterator
+    {
+        return new FlipIterator($iterator);
     }
 }
 
