@@ -1,6 +1,8 @@
 <?php
 
+use DoekeNorg\IteratorFunctions\Iterator\KeysIterator;
 use DoekeNorg\IteratorFunctions\Iterator\MapIterator;
+use DoekeNorg\IteratorFunctions\Iterator\ValuesIterator;
 
 if (!function_exists('iterator_filter')) {
     /**
@@ -16,6 +18,19 @@ if (!function_exists('iterator_filter')) {
     function iterator_filter(Iterator $iterator, ?callable $callback = null): \CallbackFilterIterator
     {
         return new \CallbackFilterIterator($iterator, $callback ?? static fn($value) => !empty($value));
+    }
+}
+
+if (!function_exists('iterator_keys')) {
+    /**
+     * Returns an iterator that produces only the keys of the inner iterator.
+     * @since $ver$
+     * @param Iterator $iterator The iterator to get the keys from.
+     * @return KeysIterator Iterator that produces the keys.
+     */
+    function iterator_keys(\Iterator $iterator): KeysIterator
+    {
+        return new KeysIterator($iterator);
     }
 }
 
@@ -52,5 +67,18 @@ if (!function_exists('iterator_reduce')) {
         }
 
         return $initial;
+    }
+}
+
+if (!function_exists('iterator_values')) {
+    /**
+     * Returns an iterator that produces only the values of the inner iterator.
+     * @since $ver$
+     * @param Iterator $iterator The iterator to get the keys from.
+     * @return KeysIterator Iterator that produces the values.
+     */
+    function iterator_values(\Iterator $iterator): ValuesIterator
+    {
+        return new ValuesIterator($iterator);
     }
 }
