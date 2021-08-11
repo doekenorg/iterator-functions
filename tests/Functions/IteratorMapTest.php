@@ -13,3 +13,10 @@ it('maps an iterator', function () {
     expect($map_iterator)->toBeInstanceOf(MapIterator::class);
     expect(iterator_to_array($map_iterator))->toBe(['ONE', 'TWO', 'THREE']);
 });
+
+it('maps an array as an iterator', function () {
+    $map_iterator = iterator_map('strtoupper', ['one', 'two', 'three']);
+
+    expect($map_iterator)->toBeInstanceOf(MapIterator::class);
+    expect(iterator_to_array($map_iterator))->toBe(['ONE', 'TWO', 'THREE']);
+});

@@ -42,3 +42,10 @@ it('doesn\'t throw an exception when the callback is variadic', function () {
     $map_iterator = new MapIterator(static fn(...$values) => implode('.', $values), $iterator, clone $iterator);
     expect(iterator_to_array($map_iterator))->toBe(['1.1', '2.2']);
 });
+
+it('maps an array as an iterator', function () {
+    $map_iterator = new MapIterator('strtoupper', ['one', 'two', 'three']);
+
+    expect($map_iterator)->toBeInstanceOf(MapIterator::class);
+    expect(iterator_to_array($map_iterator))->toBe(['ONE', 'TWO', 'THREE']);
+});

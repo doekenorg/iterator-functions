@@ -1,9 +1,24 @@
 <?php
 
+use DoekeNorg\IteratorFunctions\Iterator\ColumnIterator;
 use DoekeNorg\IteratorFunctions\Iterator\FlipIterator;
 use DoekeNorg\IteratorFunctions\Iterator\KeysIterator;
 use DoekeNorg\IteratorFunctions\Iterator\MapIterator;
 use DoekeNorg\IteratorFunctions\Iterator\ValuesIterator;
+
+if (!function_exists('iterator_column')) {
+    /**
+     * Maps the iteration to a single column from inner object / array.
+     * @since $ver$
+     * @param \Traversable $iterator The iterator that provides the arrays / objects.
+     * @param string|int|null $column_key The column to return.
+     * @param string|int|null $index_key The key to return.
+     */
+    function iterator_column(\Traversable $iterator, $column_key, $index_key = null): ColumnIterator
+    {
+        return new ColumnIterator($iterator, $column_key, $index_key);
+    }
+}
 
 if (!function_exists('iterator_filter')) {
     /**
@@ -53,10 +68,10 @@ if (!function_exists('iterator_map')) {
      * Applies the callback to the elements of the given iterators.
      * @since $ver$
      * @param callable $callback Callback function to run for each element in each iterator.
-     * @param Iterator ...$iterators Any iterator to apply the callback on.
+     * @param array|\Iterator ...$iterators Any iterator to apply the callback on.
      * @return MapIterator Iterator that returns the mapped values.
      */
-    function iterator_map(callable $callback, Iterator ...$iterators): MapIterator
+    function iterator_map(callable $callback, iterable ...$iterators): MapIterator
     {
         return new MapIterator($callback, ...$iterators);
     }

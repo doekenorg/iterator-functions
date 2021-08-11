@@ -13,7 +13,7 @@
             "DoekeNorg\\IteratorFunctions\\": "src"
         },
         "files": [
-            "functions.php"
+            "src/iterator_functions.php"
         ]
     },
     "license": "MIT",

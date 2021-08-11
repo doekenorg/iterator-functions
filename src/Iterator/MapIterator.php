@@ -17,20 +17,27 @@ class MapIterator extends \IteratorIterator
 
     /**
      * Returns the iterator.
-     * @param callable $callback Callback function to run for each element in each iterator.
-     * @param \Iterator ...$iterators Any iterator to apply the callback on.
      * @since $ver$
-     * @throws \ReflectionException When the callback could not be reflected.
+     * @param array|\Iterator ...$iterators Any iterator to apply the callback on. Can also be an array.
+     * @param callable $callback Callback function to run for each element in each iterator.
      */
-    public function __construct(callable $callback, \Iterator ...$iterators)
+    public function __construct(callable $callback, iterable ...$iterators)
     {
-        $function = new \ReflectionFunction($callback);
+        try {
+            $function = new \ReflectionFunction($callback);
+        } catch (\ReflectionException $e) {
+            throw new \RuntimeException($e->getMessage(), $e->getCode(), $e);
+        }
+
         if (!$function->isVariadic() && $function->getNumberOfParameters() !== count($iterators)) {
             throw new \InvalidArgumentException('The callback needs as many arguments as provided iterators.');
         }
 
         $inner = new \MultipleIterator();
         foreach ($iterators as $iterator) {
+            if (is_array($iterator)) {
+                $iterator = new \ArrayIterator($iterator);
+            }
             $inner->attachIterator($iterator);
         }
 
