@@ -6,7 +6,8 @@
         "php": "^7.4|^8.0"
     },
     "require-dev": {
-        "pestphp/pest": "^1.15"
+        "pestphp/pest": "^1.15",
+        "vimeo/psalm": "^4.9"
     },
     "autoload": {
         "psr-4": {

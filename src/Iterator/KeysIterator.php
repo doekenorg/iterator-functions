@@ -8,9 +8,10 @@ namespace DoekeNorg\IteratorFunctions\Iterator;
  */
 class KeysIterator extends ValuesIterator
 {
-     /**
+    /**
      * @inheritdoc
      * @since $ver$
+     * @psalm-suppress UndefinedInterfaceMethod Psalm doesn't understand the inner iterator is an {@see \Iterator}.
      */
     public function current()
     {

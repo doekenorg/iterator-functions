@@ -37,6 +37,10 @@ class ColumnIterator extends \IteratorIterator
         $this->index_key = $index_key;
     }
 
+    /**
+     * @inheritdoc
+     * @since $ver$
+     */
     public function key()
     {
         if (isset($this->index_key)) {
@@ -59,6 +63,12 @@ class ColumnIterator extends \IteratorIterator
         return parent::current();
     }
 
+    /**
+     * Retrieves a single column from the current iteration.
+     * @since $ver$
+     * @param int|string $key The key to retrieve from the iteration.
+     * @return mixed|null The value.
+     */
     protected function column($key)
     {
         $iteration = parent::current();

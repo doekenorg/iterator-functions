@@ -24,9 +24,9 @@ class MapIterator extends \IteratorIterator
     public function __construct(callable $callback, iterable ...$iterators)
     {
         try {
-            $function = new \ReflectionFunction($callback);
+            $function = new \ReflectionFunction(\Closure::fromCallable($callback));
         } catch (\ReflectionException $e) {
-            throw new \RuntimeException($e->getMessage(), $e->getCode(), $e);
+            throw new \RuntimeException($e->getMessage(), (int) $e->getCode(), $e);
         }
 
         if (!$function->isVariadic() && $function->getNumberOfParameters() !== count($iterators)) {
