@@ -2,14 +2,12 @@
 
 /**
  * Tests for {@see iterator_keys()}.
- * @since $ver$
  */
 
 use DoekeNorg\IteratorFunctions\Iterator\KeysIterator;
 
 /**
  * Tests for {@see iterator_keys()).
- * @since $ver$
  */
 it('returns only the keys of the iterator', function() {
     $iterator = new \ArrayIterator(['one' => 1, 'two' => 2]);

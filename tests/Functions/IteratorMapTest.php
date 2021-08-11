@@ -4,7 +4,6 @@ use DoekeNorg\IteratorFunctions\Iterator\MapIterator;
 
 /**
  * Tests for {@see iterator_map()}.
- * @since $ver$
  */
 it('maps an iterator', function () {
     $iterator = new ArrayIterator(['one', 'two', 'three']);

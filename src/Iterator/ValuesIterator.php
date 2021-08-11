@@ -4,7 +4,6 @@ namespace DoekeNorg\IteratorFunctions\Iterator;
 
 /**
  * Iterator that returns only the values of the provided iterator.
- * @since $ver$
  */
 class ValuesIterator extends \IteratorIterator
 {
@@ -16,7 +15,6 @@ class ValuesIterator extends \IteratorIterator
 
     /**
      * @inheritdoc
-     * @since $ver$
      */
     public function key(): int
     {
@@ -28,7 +26,6 @@ class ValuesIterator extends \IteratorIterator
      *
      * Increases the internal count.
      *
-     * @since $ver$
      */
     public function next(): void
     {
@@ -41,7 +38,6 @@ class ValuesIterator extends \IteratorIterator
      *
      * Resets the internal count.
      *
-     * @since $ver$
      */
     public function rewind(): void
     {

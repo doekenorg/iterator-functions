@@ -2,7 +2,6 @@
 
 /**
  * Tests for {@see iterator_reduce()}.
- * @since $ver$
  */
 it('reduces an iterator', function () {
     $iterator = new \ArrayIterator([1, 2, 3]);

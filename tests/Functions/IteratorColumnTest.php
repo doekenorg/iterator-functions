@@ -2,7 +2,6 @@
 
 /**
  * Tests for {@see iterator_column()}.
- * @since $ver$
  */
 
 use DoekeNorg\IteratorFunctions\Iterator\ColumnIterator;

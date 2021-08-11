@@ -4,7 +4,6 @@ use DoekeNorg\IteratorFunctions\Iterator\ValuesIterator;
 
 /**
  * Tests for {@see ValuesIterator}.
- * @since $ver$
  */
 it('returns only the keys of the iterator', function () {
     $iterator = new \ArrayIterator(['one' => 1, 'two' => 2]);

@@ -9,7 +9,6 @@ use DoekeNorg\IteratorFunctions\Iterator\ValuesIterator;
 if (!function_exists('iterator_column')) {
     /**
      * Maps the iteration to a single column from inner object / array.
-     * @since $ver$
      * @param \Traversable $iterator The iterator that provides the arrays / objects.
      * @param string|int|null $column_key The column to return.
      * @param string|int|null $index_key The key to return.
@@ -23,7 +22,6 @@ if (!function_exists('iterator_column')) {
 if (!function_exists('iterator_filter')) {
     /**
      * Filters elements off an iterator using a callback function.
-     * @since $ver$
      * @param Iterator $iterator The iterator to be filtered.
      * @param callable|null $callback The callback, which should return TRUE to accept the current item or FALSE otherwise.
      * Can be any valid callable value. Will filter empty values by default.
@@ -40,7 +38,6 @@ if (!function_exists('iterator_filter')) {
 if (!function_exists('iterator_flip')) {
     /**
      * Flips the key and value of an iteration.
-     * @since $ver$
      * @param Iterator $iterator The iterator to flip.
      * @return FlipIterator Iterator with flipped values and keys.
      */
@@ -53,7 +50,6 @@ if (!function_exists('iterator_flip')) {
 if (!function_exists('iterator_keys')) {
     /**
      * Returns an iterator that produces only the keys of the inner iterator.
-     * @since $ver$
      * @param Iterator $iterator The iterator to get the keys from.
      * @return KeysIterator Iterator that produces the keys.
      */
@@ -66,7 +62,6 @@ if (!function_exists('iterator_keys')) {
 if (!function_exists('iterator_map')) {
     /**
      * Applies the callback to the elements of the given iterators.
-     * @since $ver$
      * @param callable $callback Callback function to run for each element in each iterator.
      * @param array|\Iterator ...$iterators Any iterator to apply the callback on.
      * @return MapIterator Iterator that returns the mapped values.
@@ -80,7 +75,6 @@ if (!function_exists('iterator_map')) {
 if (!function_exists('iterator_reduce')) {
     /**
      * Iteratively reduce the iterator to a single value using a callback function.
-     * @since $ver$
      * @param Iterator $iterator The input iterator.
      * @param callable $callback The callback, which should return the reduced value. It takes three arguments:
      *   - mixed $carry Holds the return value of the previous iteration; in the case of the first iteration it instead holds the value of $initial.
@@ -102,7 +96,6 @@ if (!function_exists('iterator_reduce')) {
 if (!function_exists('iterator_values')) {
     /**
      * Returns an iterator that produces only the values of the inner iterator.
-     * @since $ver$
      * @param Iterator $iterator The iterator to get the keys from.
      * @return ValuesIterator Iterator that produces the values.
      */
@@ -115,7 +108,6 @@ if (!function_exists('iterator_values')) {
 if (!function_exists('iterator_walk')) {
     /**
      * Traverses an iterator and applies a callback to every iteration.
-     * @since $ver$
      * @param Iterator $iterator The iteration to traverse.
      * @param callable $callback The callback to call for every iteration.
      * @param mixed ...$arguments Any extra arguments to provide to the callback.

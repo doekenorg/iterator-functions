@@ -2,7 +2,6 @@
 
 /**
  * Tests for {@see iterator_values()}.
- * @since $ver$
  */
 
 use DoekeNorg\IteratorFunctions\Iterator\ValuesIterator;

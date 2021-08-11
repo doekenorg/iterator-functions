@@ -4,7 +4,6 @@ use DoekeNorg\IteratorFunctions\Iterator\FlipIterator;
 
 /**
  * Tests for {@see FlipIterator}.
- * @since $ver$
  */
 it('flips the value and key', function () {
     $iterator = new ArrayIterator(['one' => 1, 'two' => 2]);

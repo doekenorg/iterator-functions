@@ -2,7 +2,6 @@
 
 /**
  * Tests for {@see iterator_walk()}.
- * @since $ver$
  */
 it('walks an iterator', function () {
     $objects = [

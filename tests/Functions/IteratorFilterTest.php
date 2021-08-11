@@ -2,7 +2,6 @@
 
 /**
  * Tests for {@see iterator_filter()}.
- * @since $ver$
  */
 it('filters an iterator', function () {
     $iterator = new \ArrayIterator(['one', 'two', 'three']);

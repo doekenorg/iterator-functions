@@ -4,27 +4,23 @@ namespace DoekeNorg\IteratorFunctions\Iterator;
 
 /**
  * Iterator that returns a single column for the iteration array / object.
- * @since $ver$
  */
 class ColumnIterator extends \IteratorIterator
 {
     /**
      * The column to return.
-     * @since $ver$
      * @var string|int|null
      */
     private $column_key;
 
     /**
      * The column to use as a key.
-     * @since $ver$
      * @var string|int|null
      */
     private $index_key;
 
     /**
      * Creates the iterator.
-     * @since $ver$
      * @param \Traversable $iterator The iterator that provides the arrays / objects.
      * @param string|int|null $column_key The column to return.
      * @param string|int|null $index_key The key to return.
@@ -39,7 +35,6 @@ class ColumnIterator extends \IteratorIterator
 
     /**
      * @inheritdoc
-     * @since $ver$
      */
     public function key()
     {
@@ -52,7 +47,6 @@ class ColumnIterator extends \IteratorIterator
 
     /**
      * @inheritdoc
-     * @since $ver$
      */
     public function current()
     {
@@ -65,7 +59,6 @@ class ColumnIterator extends \IteratorIterator
 
     /**
      * Retrieves a single column from the current iteration.
-     * @since $ver$
      * @param int|string $key The key to retrieve from the iteration.
      * @return mixed|null The value.
      */
