@@ -111,3 +111,19 @@ if (!function_exists('iterator_values')) {
         return new ValuesIterator($iterator);
     }
 }
+
+if (!function_exists('iterator_walk')) {
+    /**
+     * Traverses an iterator and applies a callback to every iteration.
+     * @since $ver$
+     * @param Iterator $iterator The iteration to traverse.
+     * @param callable $callback The callback to call for every iteration.
+     * @param mixed ...$arguments Any extra arguments to provide to the callback.
+     */
+    function iterator_walk(\Iterator $iterator, callable $callback, ...$arguments): void
+    {
+        foreach ($iterator as $key => $value) {
+            $callback($value, $key, ...$arguments);
+        }
+    }
+}
