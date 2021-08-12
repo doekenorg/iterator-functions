@@ -1,4 +1,4 @@
-# Missing iterator functions
+# Iterator functions
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/doekenorg/iterator-functions.svg?style=flat-square)](https://packagist.org/packages/doekenorg/iterator-functions)
 [![Tests](https://github.com/doekenorg/iterator-functions/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/doekenorg/iterator-functions/actions/workflows/run-tests.yml)
@@ -20,7 +20,7 @@ an `Iterator` instance. This means that you can use them in the same way, but ge
 - `iterator_values(\Iterator $iterator): ValuesIterator`
 - `iterator_walk(\Iterator $iterator, callable $callback, ...$arguments): void`
 
-*Note:* There are no `_diff` or `_intersect` function available, because these are not possible without forgoing on the
+*Note:* There are no `_diff` or `_intersect` functions available, because these are not possible without forgoing on the
 memory benefits of iterators.
 
 ## Available iterators
