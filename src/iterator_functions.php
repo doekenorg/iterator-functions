@@ -81,7 +81,7 @@ if (!function_exists('iterator_reduce')) {
      *   - mixed $value Holds the value of the current iteration.
      *   - mixed $key Holds the key of the current iteration.
      * @param null $initial If the optional initial is available, it will be used at the beginning of the process, or as a final result in case the array is empty.
-     * @return mixed|null The resulting value.
+     * @return mixed The resulting value.
      */
     function iterator_reduce(\Iterator $iterator, callable $callback, $initial = null)
     {

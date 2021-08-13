@@ -8,7 +8,7 @@ package is built to encourage developers to make more use of `Iterators` by simp
 
 ## Available functions
 
-All available methods are modeled after their `array_*` equivalent. But instead of returning an `array` it will return
+All available functions are modeled after their `array_*` equivalent. But instead of returning an `array` it will return
 an `Iterator` instance. This means that you can use them in the same way, but get the added memory preserving benefits.
 
 - `iterator_column(\Traversable $iterator, $column_key, $index_key = null): ColumnIterator`
