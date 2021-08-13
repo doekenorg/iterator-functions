@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.0.0] - 2021-08-01
+## [1.0.0] - 2021-08-11
 - Initial release
 
 [Unreleased]: https://github.com/doekenorg/iterator-functions/compare/1.0.0...HEAD
