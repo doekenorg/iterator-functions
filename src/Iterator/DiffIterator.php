@@ -26,6 +26,12 @@ class DiffIterator extends \FilterIterator
     private bool $with_associative = false;
 
     /**
+     * Whether the key should be compared instead of the value.
+     * @var bool
+     */
+    private bool $with_key = false;
+
+    /**
      * @inheritdoc
      * @since $ver$
      */
@@ -46,8 +52,16 @@ class DiffIterator extends \FilterIterator
      */
     public function accept(): bool
     {
-        foreach ($this->iterator_compare as $key => $compare) {
-            if ($compare === $this->current()) {
+        if ($this->with_key && $this->with_associative) {
+            throw new \InvalidArgumentException('Can only use one of "withKey" or "withAssociative", not both.');
+        }
+
+        foreach ($this->iterator_compare as $key => $value) {
+            if ($this->with_key && $key === $this->key()) {
+                return $this->equal_accept;
+            }
+
+            if ($value === $this->current()) {
                 if ($this->with_associative && $key !== $this->key()) {
                     continue;
                 }
@@ -67,6 +81,18 @@ class DiffIterator extends \FilterIterator
     public function withAssociative(bool $bool): self
     {
         $this->with_associative = $bool;
+
+        return $this;
+    }
+
+    /**
+     * Sets the iterator whether to compare against the key.
+     * @param bool $bool Whether the iterator should be compared against the key.
+     * @return $this The iterator.
+     */
+    public function withKey(bool $bool): self
+    {
+        $this->with_key = $bool;
 
         return $this;
     }

@@ -23,3 +23,28 @@ it('intersects more than two iterators', function () {
 
     expect(iterator_to_array($iterator_intersect))->toBe([1 => 2, 2 => 3, 5 => 'three']);
 });
+
+/**
+ * Tests for {@see iterator_intersect_assoc()}.
+ */
+
+it('intersects two iterators associatively', function () {
+    $iterator_1 = new ArrayIterator(['a' => 'green', 'b' => 'brown', 'c' => 'blue', 'red']);
+    $iterator_2 = new ArrayIterator(['a' => 'green', 'yellow', 'red']);
+
+    $result = iterator_intersect_assoc($iterator_1, $iterator_2);
+
+    expect(iterator_to_array($result))->toBe(['a' => 'green']);
+});
+
+/**
+* Tests for {@see iterator_intersect_key()}.
+ */
+
+it('can intersect by key', function () {
+    $iterator_1 = new ArrayIterator(['blue' => 1, 'red' => 2, 'green' => 3, 'purple' => 4]);
+    $iterator_2 = new ArrayIterator(['green' => 5, 'blue' => 6, 'yellow' => 7, 'cyan' => 8]);
+
+    $result = iterator_intersect_key($iterator_1, $iterator_2);
+    expect(iterator_to_array($result))->toBe(['blue' => 1, 'green' => 3]);
+});

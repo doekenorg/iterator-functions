@@ -47,6 +47,19 @@ if (!function_exists('iterator_diff_assoc')) {
     }
 }
 
+if (!function_exists('iterator_diff_key')) {
+    /**
+     * Computes the difference of iterators by key check.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @return DiffIterator An iterator with the difference.
+     */
+    function iterator_diff_key(\Iterator $iterator, \Iterator ...$iterators): DiffIterator
+    {
+        return (new DiffIterator($iterator, ...$iterators))->withKey(true);
+    }
+}
+
 if (!function_exists('iterator_filter')) {
     /**
      * Filters elements off an iterator using a callback function.
@@ -98,6 +111,18 @@ if (!function_exists('iterator_intersect_assoc')) {
     function iterator_intersect_assoc(\Iterator $iterator, \Iterator ...$iterators): IntersectIterator
     {
         return (new IntersectIterator($iterator, ...$iterators))->withAssociative(true);
+    }
+}
+if (!function_exists('iterator_intersect_key')) {
+    /**
+     * Computes the intersection of iterators by key check.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @return DiffIterator An iterator with the difference.
+     */
+    function iterator_intersect_key(\Iterator $iterator, \Iterator ...$iterators): DiffIterator
+    {
+        return (new IntersectIterator($iterator, ...$iterators))->withKey(true);
     }
 }
 
