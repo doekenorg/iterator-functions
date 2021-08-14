@@ -1,7 +1,9 @@
 <?php
 
 use DoekeNorg\IteratorFunctions\Iterator\ColumnIterator;
+use DoekeNorg\IteratorFunctions\Iterator\DiffIterator;
 use DoekeNorg\IteratorFunctions\Iterator\FlipIterator;
+use DoekeNorg\IteratorFunctions\Iterator\IntersectIterator;
 use DoekeNorg\IteratorFunctions\Iterator\KeysIterator;
 use DoekeNorg\IteratorFunctions\Iterator\MapIterator;
 use DoekeNorg\IteratorFunctions\Iterator\ValuesIterator;
@@ -16,6 +18,32 @@ if (!function_exists('iterator_column')) {
     function iterator_column(\Traversable $iterator, $column_key, $index_key = null): ColumnIterator
     {
         return new ColumnIterator($iterator, $column_key, $index_key);
+    }
+}
+
+if (!function_exists('iterator_diff')) {
+    /**
+     * Computes the difference of iterators.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @return DiffIterator An iterator with the difference.
+     */
+    function iterator_diff(\Iterator $iterator, \Iterator ...$iterators): DiffIterator
+    {
+        return new DiffIterator($iterator, ...$iterators);
+    }
+}
+
+if (!function_exists('iterator_diff_assoc')) {
+    /**
+     * Computes the difference of iterators with extra key check.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @return DiffIterator An iterator with the difference.
+     */
+    function iterator_diff_assoc(\Iterator $iterator, \Iterator ...$iterators): DiffIterator
+    {
+        return (new DiffIterator($iterator, ...$iterators))->withAssociative(true);
     }
 }
 
@@ -44,6 +72,32 @@ if (!function_exists('iterator_flip')) {
     function iterator_flip(Iterator $iterator): FlipIterator
     {
         return new FlipIterator($iterator);
+    }
+}
+
+if (!function_exists('iterator_intersect')) {
+    /**
+     * Computes the difference between iterators.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @return IntersectIterator An iterator with the intersection.
+     */
+    function iterator_intersect(\Iterator $iterator, \Iterator ...$iterators): IntersectIterator
+    {
+        return new IntersectIterator($iterator, ...$iterators);
+    }
+}
+
+if (!function_exists('iterator_intersect_assoc')) {
+    /**
+     * Computes the difference between iterators with extra key check.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @return IntersectIterator An iterator with the intersection.
+     */
+    function iterator_intersect_assoc(\Iterator $iterator, \Iterator ...$iterators): IntersectIterator
+    {
+        return (new IntersectIterator($iterator, ...$iterators))->withAssociative(true);
     }
 }
 
