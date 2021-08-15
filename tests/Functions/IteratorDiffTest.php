@@ -104,3 +104,47 @@ it('can diff using a callback', function () {
     $result = iterator_udiff($iterator_1, $iterator_2, $compare_func);
     expect(iterator_to_array($result))->toBe([1, 2]);
 });
+
+/**
+ * Test for {@see iterator_udiff_assoc()}.
+ */
+it('can diff using a callback and a key validation', function () {
+    $compare_func = function ($value_1, $value_2) {
+       if ($value_1 === 'apple' && $value_2 === 'orange') {
+           return 0; // nothing to compare, same fruit
+       }
+       return $value_1 <=> $value_2;
+    };
+
+    $iterator_1 = new ArrayIterator(['apple', 'pear', 'lime']);
+    $iterator_2 = new ArrayIterator(['orange', 'berry']);
+
+    $result = iterator_udiff_assoc($iterator_1, $iterator_2, $compare_func);
+    expect(iterator_to_array($result))->toBe([1 => 'pear', 2 => 'lime']);
+});
+
+/**
+ * Test for {@see iterator_udiff_uassoc()}.
+ */
+it('can diff using a callback and a key validation using a callback', function () {
+    $value_compare = function ($value_1, $value_2) {
+        if ($value_1 === 'apple' && $value_2 === 'orange') {
+            return 0; // nothing to compare, same fruit
+        }
+        return $value_1 <=> $value_2;
+    };
+
+    $key_compare = function ($value_1, $value_2) {
+        if ($value_1 === 0 && $value_2 === 1) {
+            return 0; // nothing to compare, same fruit
+        }
+        return $value_1 <=> $value_2;
+    };
+
+    $iterator_1 = new ArrayIterator(['apple', 'pear', 'lime']);
+    $iterator_2 = new ArrayIterator(['berry', 'orange']);
+
+    $result = iterator_udiff_uassoc($iterator_1, $iterator_2, $value_compare, $key_compare);
+    expect(iterator_to_array($result))->toBe([1 => 'pear', 2 => 'lime']);
+});
+

@@ -110,3 +110,47 @@ it('intersects two iterators using a callback', function () {
     expect(iterator_to_array($iterator_intersect))->toBe([2 => 3]);
     expect(iterator_to_array($iterator_intersect_2))->toBe([1 => 3]);
 });
+
+/**
+ * Test for {@see iterator_uintersect_assoc()}.
+ */
+it('can intersect using a callback and a key validation', function () {
+    $compare_func = function ($value_1, $value_2) {
+        if ($value_1 === 'apple' && $value_2 === 'orange') {
+            return 0; // nothing to compare, same fruit
+        }
+        return $value_1 <=> $value_2;
+    };
+
+    $iterator_1 = new ArrayIterator(['apple', 'pear', 'lime']);
+    $iterator_2 = new ArrayIterator(['orange', 'berry']);
+
+    $result = iterator_uintersect_assoc($iterator_1, $iterator_2, $compare_func);
+    expect(iterator_to_array($result))->toBe(['apple']);
+});
+
+/**
+ * Test for {@see iterator_uintersect_uassoc()}.
+ */
+it('can diff using a callback and a key validation using a callback', function () {
+    $value_compare = function ($value_1, $value_2) {
+        if ($value_1 === 'apple' && $value_2 === 'orange') {
+            return 0; // nothing to compare, same fruit
+        }
+        return $value_1 <=> $value_2;
+    };
+
+    $key_compare = function ($value_1, $value_2) {
+        if ($value_1 === 0 && $value_2 === 1) {
+            return 0; // nothing to compare, same fruit
+        }
+        return $value_1 <=> $value_2;
+    };
+
+    $iterator_1 = new ArrayIterator(['apple', 'pear', 'lime']);
+    $iterator_2 = new ArrayIterator(['berry', 'orange']);
+
+    $result = iterator_uintersect_uassoc($iterator_1, $iterator_2, $value_compare, $key_compare);
+    expect(iterator_to_array($result))->toBe(['apple']);
+});
+
