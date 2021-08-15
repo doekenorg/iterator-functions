@@ -68,6 +68,24 @@ it('can diff by key using a callback', function () {
     expect(iterator_to_array($result))->toBe(['red' => 2, 'green' => 3, 'purple' => 4]);
 });
 
+it('can diff with key validation using a callback', function () {
+    $compare_func = function ($key_1, $key_2) {
+        if ($key_1 === 0 && $key_2 === 1) {
+            // Red is on 0 in first iterator, and on 1 in second.
+            return 0; // Let's consider them the same.
+        }
+
+        return $key_1 <=> $key_2;
+    };
+
+    $iterator_1 = new ArrayIterator(['a' => 'green', 'b' => 'brown', 'c' => 'blue', 'red']);
+    $iterator_2 = new ArrayIterator(['a' => 'green', 'yellow', 'red']);
+
+    $result = iterator_diff_uassoc($iterator_1, $iterator_2, $compare_func);
+
+    expect(iterator_to_array($result))->toBe(['b' => 'brown', 'c' => 'blue']);
+});
+
 /**
  * Tests for {@see iterator_udiff()}.
  */
