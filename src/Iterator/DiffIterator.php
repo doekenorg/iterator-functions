@@ -27,13 +27,12 @@ class DiffIterator extends \FilterIterator
 
     /**
      * Whether the key should be compared instead of the value.
-     * @var bool
+     * @var null|callable
      */
-    private bool $with_key = false;
+    private $key_compare;
 
     /**
      * @inheritdoc
-     * @since $ver$
      */
     public function __construct(\Iterator $iterator, \Iterator ...$iterators)
     {
@@ -47,17 +46,48 @@ class DiffIterator extends \FilterIterator
     }
 
     /**
+     * Extracts the params from a function call.
+     * @param array $arguments The provided arguments.
+     * @return mixed The params.
+     */
+    public static function extractParams(array $arguments): array
+    {
+        $result = ['iterator' => null, 'iterators' => [], 'callbacks' => []];
+
+        $iterator = array_shift($arguments);
+        if (!$iterator instanceof \Iterator) {
+            throw new \InvalidArgumentException('First parameter must be an iterator.');
+        }
+
+        $result['iterator'] = $iterator;
+
+        while (($argument = array_shift($arguments))) {
+            if (!$argument instanceof \Iterator && !is_callable($argument)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Argument should be an iterator or callback; "%s" given.',
+                    is_string($argument) ? $argument : get_class($argument),
+                ));
+            }
+            $type = $argument instanceof \Iterator
+                ? 'iterators'
+                : 'callbacks';
+            $result[$type][] = $argument;
+        }
+
+        return array_values($result);
+    }
+
+    /**
      * @inheritdoc
-     * @since $ver$
      */
     public function accept(): bool
     {
-        if ($this->with_key && $this->with_associative) {
+        if ($this->key_compare && $this->with_associative) {
             throw new \InvalidArgumentException('Can only use one of "withKey" or "withAssociative", not both.');
         }
 
         foreach ($this->iterator_compare as $key => $value) {
-            if ($this->with_key && $key === $this->key()) {
+            if ($this->key_compare && ($this->key_compare)($this->key(), $key) === 0) {
                 return $this->equal_accept;
             }
 
@@ -86,13 +116,13 @@ class DiffIterator extends \FilterIterator
     }
 
     /**
-     * Sets the iterator whether to compare against the key.
-     * @param bool $bool Whether the iterator should be compared against the key.
+     * Sets the iterator to compare against the key.
+     * @param null|callable $callback Optional callable to perform as key compare function.
      * @return $this The iterator.
      */
-    public function withKey(bool $bool): self
+    public function withKey(?callable $callback = null): self
     {
-        $this->with_key = $bool;
+        $this->key_compare = $callback ?? static fn($current_key, $compare_key):int => $current_key <=> $compare_key;
 
         return $this;
     }

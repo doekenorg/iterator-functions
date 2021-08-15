@@ -56,7 +56,23 @@ if (!function_exists('iterator_diff_key')) {
      */
     function iterator_diff_key(\Iterator $iterator, \Iterator ...$iterators): DiffIterator
     {
-        return (new DiffIterator($iterator, ...$iterators))->withKey(true);
+        return (new DiffIterator($iterator, ...$iterators))->withKey();
+    }
+}
+
+if (!function_exists('iterator_diff_ukey')) {
+    /**
+     * Computes the difference of iterators by key check using a callback.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @param callable $callback The callback that computes the difference on the keys. Must return an `int`.
+     * @return DiffIterator An iterator with the difference.
+     */
+    function iterator_diff_ukey(): DiffIterator
+    {
+        [$iterator, $iterators, $callbacks] = DiffIterator::extractParams(func_get_args());
+
+        return (new DiffIterator($iterator, ...$iterators))->withKey(...$callbacks);
     }
 }
 
@@ -72,7 +88,7 @@ if (!function_exists('iterator_filter')) {
      */
     function iterator_filter(Iterator $iterator, ?callable $callback = null): \CallbackFilterIterator
     {
-        return new \CallbackFilterIterator($iterator, $callback ?? static fn($value) => !empty($value));
+        return new \CallbackFilterIterator($iterator, $callback ?? static fn($value): bool => !empty($value));
     }
 }
 
@@ -122,7 +138,22 @@ if (!function_exists('iterator_intersect_key')) {
      */
     function iterator_intersect_key(\Iterator $iterator, \Iterator ...$iterators): DiffIterator
     {
-        return (new IntersectIterator($iterator, ...$iterators))->withKey(true);
+        return (new IntersectIterator($iterator, ...$iterators))->withKey();
+    }
+}
+
+if (!function_exists('iterator_intersect_ukey')) {
+    /**
+     * Computes the intersection of iterators by key check using a callback.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @return DiffIterator An iterator with the difference.
+     */
+    function iterator_intersect_ukey(): DiffIterator
+    {
+        [$iterator, $iterators, $callbacks] = DiffIterator::extractParams(func_get_args());
+
+        return (new IntersectIterator($iterator, ...$iterators))->withKey(...$callbacks);
     }
 }
 

@@ -38,7 +38,7 @@ it('intersects two iterators associatively', function () {
 });
 
 /**
-* Tests for {@see iterator_intersect_key()}.
+ * Tests for {@see iterator_intersect_key()}.
  */
 
 it('can intersect by key', function () {
@@ -47,4 +47,24 @@ it('can intersect by key', function () {
 
     $result = iterator_intersect_key($iterator_1, $iterator_2);
     expect(iterator_to_array($result))->toBe(['blue' => 1, 'green' => 3]);
+});
+
+/**
+ * Tests for {@see iterator_intersect_ukey()}.
+ */
+
+it('can intersect by key using a callback', function () {
+    $compare_func = function ($key_1, $key_2) {
+        // green is always different
+        if ($key_1 === $key_2 && !in_array('green', [$key_1, $key_2], true)) {
+            return 0;
+        }
+
+        return 1;
+    };
+    $iterator_1 = new ArrayIterator(['blue' => 1, 'red' => 2, 'green' => 3, 'purple' => 4]);
+    $iterator_2 = new ArrayIterator(['green' => 5, 'blue' => 6, 'yellow' => 7, 'cyan' => 8]);
+
+    $result = iterator_intersect_ukey($iterator_1, $iterator_2, $compare_func);
+    expect(iterator_to_array($result))->toBe(['blue' => 1]);
 });

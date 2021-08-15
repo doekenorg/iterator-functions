@@ -48,3 +48,22 @@ it('can diff by key', function () {
     $result = iterator_diff_key($iterator_1, $iterator_2);
     expect(iterator_to_array($result))->toBe(['blue' => 1, 'red' => 2, 'purple' => 4]);
 });
+
+/**
+ * Tests for {@see iterator_diff_ukey()}.
+ */
+it('can diff by key using a callback', function () {
+    $compare_func = function ($key_1, $key_2) {
+        // green is always different
+        if ($key_1 === $key_2 && !in_array('green', [$key_1, $key_2], true)) {
+            return 0;
+        }
+
+        return 1;
+    };
+    $iterator_1 = new ArrayIterator(['blue' => 1, 'red' => 2, 'green' => 3, 'purple' => 4]);
+    $iterator_2 = new ArrayIterator(['green' => 5, 'blue' => 6, 'yellow' => 7, 'cyan' => 8]);
+
+    $result = iterator_diff_ukey($iterator_1, $iterator_2, $compare_func);
+    expect(iterator_to_array($result))->toBe(['red' => 2, 'green' => 3, 'purple' => 4]);
+});
