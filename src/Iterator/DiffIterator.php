@@ -26,10 +26,16 @@ class DiffIterator extends \FilterIterator
     private bool $with_associative = false;
 
     /**
-     * Whether the key should be compared instead of the value.
+     * Callback to use for key comparison.
      * @var null|callable
      */
     private $key_compare;
+
+    /**
+     * callback to use for value comparison.
+     * @var null|callable
+     */
+    private $value_compare;
 
     /**
      * @inheritdoc
@@ -39,6 +45,7 @@ class DiffIterator extends \FilterIterator
         parent::__construct($iterator);
 
         $this->iterator_compare = new \AppendIterator();
+        $this->value_compare = static fn($current_value, $compare_value):int => $current_value <=> $compare_value;
 
         foreach ($iterators as $iterator_compare) {
             $this->iterator_compare->append($iterator_compare);
@@ -91,7 +98,7 @@ class DiffIterator extends \FilterIterator
                 return $this->equal_accept;
             }
 
-            if ($value === $this->current()) {
+            if (($this->value_compare)($this->current(), $value) === 0) {
                 if ($this->with_associative && $key !== $this->key()) {
                     continue;
                 }
@@ -122,7 +129,19 @@ class DiffIterator extends \FilterIterator
      */
     public function withKey(?callable $callback = null): self
     {
-        $this->key_compare = $callback ?? static fn($current_key, $compare_key):int => $current_key <=> $compare_key;
+        $this->key_compare = $callback ?? static fn($current_key, $compare_key): int => $current_key <=> $compare_key;
+
+        return $this;
+    }
+
+    /**
+     * Sets the iterator to compare the value by callback.
+     * @param callable $callback Callable to perform as compare function.
+     * @return $this The iterator.
+     */
+    public function withCallback(callable $callback): self
+    {
+        $this->value_compare = $callback;
 
         return $this;
     }

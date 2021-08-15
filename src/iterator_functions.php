@@ -76,6 +76,22 @@ if (!function_exists('iterator_diff_ukey')) {
     }
 }
 
+if (!function_exists('iterator_udiff')) {
+    /**
+     * Computes the difference of iterators using a callback.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @param callback(mixed $current_value, mixed $compare_value):int The callback to perform.
+     * @return DiffIterator An iterator with the difference.
+     */
+    function iterator_udiff(): DiffIterator
+    {
+        [$iterator, $iterators, $callbacks] = DiffIterator::extractParams(func_get_args());
+
+        return (new DiffIterator($iterator, ...$iterators))->withCallback(...$callbacks);
+    }
+}
+
 if (!function_exists('iterator_filter')) {
     /**
      * Filters elements off an iterator using a callback function.
@@ -154,6 +170,21 @@ if (!function_exists('iterator_intersect_ukey')) {
         [$iterator, $iterators, $callbacks] = DiffIterator::extractParams(func_get_args());
 
         return (new IntersectIterator($iterator, ...$iterators))->withKey(...$callbacks);
+    }
+}
+if (!function_exists('iterator_uintersect')) {
+    /**
+     * Computes the intersection of iterators using a callback.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @param callback(mixed $current_value, mixed $compare_value):int The callback to perform.
+     * @return DiffIterator An iterator with the difference.
+     */
+    function iterator_uintersect(): DiffIterator
+    {
+        [$iterator, $iterators, $callbacks] = DiffIterator::extractParams(func_get_args());
+
+        return (new IntersectIterator($iterator, ...$iterators))->withCallback(...$callbacks);
     }
 }
 

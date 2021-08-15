@@ -68,3 +68,23 @@ it('can intersect by key using a callback', function () {
     $result = iterator_intersect_ukey($iterator_1, $iterator_2, $compare_func);
     expect(iterator_to_array($result))->toBe(['blue' => 1]);
 });
+
+it('intersects two iterators using a callback', function () {
+    $iterator_1 = new ArrayIterator([1, 2, 3]);
+    $iterator_2 = new ArrayIterator([2, 3, 4]);
+
+    $callback = static function ($value_1, $value_2): int {
+        // 2 is always different
+        if ($value_1 === $value_2 && !in_array(2, [$value_1, $value_2], true)) {
+            return 0;
+        }
+
+        return 1;
+    };
+
+    $iterator_intersect = iterator_uintersect($iterator_1, $iterator_2, $callback);
+    $iterator_intersect_2 = iterator_uintersect($iterator_2, $iterator_1, $callback);
+
+    expect(iterator_to_array($iterator_intersect))->toBe([2 => 3]);
+    expect(iterator_to_array($iterator_intersect_2))->toBe([1 => 3]);
+});
