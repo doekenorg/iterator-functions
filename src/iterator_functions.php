@@ -62,7 +62,7 @@ if (!function_exists('iterator_diff_key')) {
 
 if (!function_exists('iterator_diff_uassoc')) {
     /**
-     * Computes the difference of iterators by key check using a callback.
+     * Computes the difference of iterators with extra by key check using a callback.
      * @param \Iterator $iterator The iterator to compare from.
      * @param \Iterator ...$iterators The iterators to compare against.
      * @param callable $callback The callback that computes the difference on the keys. Must return an `int`.
@@ -71,6 +71,9 @@ if (!function_exists('iterator_diff_uassoc')) {
     function iterator_diff_uassoc(): DiffIterator
     {
         [$iterator, $iterators, $callbacks] = DiffIterator::extractParams(func_get_args());
+        if (count($callbacks) === 0) {
+            throw new \InvalidArgumentException('No associative callback provided.');
+        }
 
         return (new DiffIterator($iterator, ...$iterators))->withAssociative(...$callbacks);
     }
@@ -87,6 +90,9 @@ if (!function_exists('iterator_diff_ukey')) {
     function iterator_diff_ukey(): DiffIterator
     {
         [$iterator, $iterators, $callbacks] = DiffIterator::extractParams(func_get_args());
+        if (count($callbacks) === 0) {
+            throw new \InvalidArgumentException('No key callback provided.');
+        }
 
         return (new DiffIterator($iterator, ...$iterators))->withKey(...$callbacks);
     }
@@ -103,6 +109,9 @@ if (!function_exists('iterator_udiff')) {
     function iterator_udiff(): DiffIterator
     {
         [$iterator, $iterators, $callbacks] = DiffIterator::extractParams(func_get_args());
+        if (count($callbacks) === 0) {
+            throw new \InvalidArgumentException('No diff callback provided.');
+        }
 
         return (new DiffIterator($iterator, ...$iterators))->withCallback(...$callbacks);
     }
@@ -119,6 +128,9 @@ if (!function_exists('iterator_udiff_assoc')) {
     function iterator_udiff_assoc(): DiffIterator
     {
         [$iterator, $iterators, $callbacks] = DiffIterator::extractParams(func_get_args());
+        if (count($callbacks) === 0) {
+            throw new \InvalidArgumentException('No diff callback provided.');
+        }
 
         return (new DiffIterator($iterator, ...$iterators))
             ->withCallback(...$callbacks)
@@ -138,6 +150,13 @@ if (!function_exists('iterator_udiff_uassoc')) {
     function iterator_udiff_uassoc(): DiffIterator
     {
         [$iterator, $iterators, $callbacks] = DiffIterator::extractParams(func_get_args());
+        if (count($callbacks) === 0) {
+            throw new \InvalidArgumentException('No diff callback provided.');
+        }
+
+        if (count($callbacks) === 1) {
+            throw new \InvalidArgumentException('No associative callback provided.');
+        }
 
         return (new DiffIterator($iterator, ...$iterators))
             ->withCallback($callbacks[0])
@@ -222,6 +241,9 @@ if (!function_exists('iterator_intersect_uassoc')) {
     function iterator_intersect_uassoc(): IntersectIterator
     {
         [$iterator, $iterators, $callbacks] = IntersectIterator::extractParams(func_get_args());
+        if (count($callbacks) === 0) {
+            throw new \InvalidArgumentException('No associative callback provided.');
+        }
 
         return (new IntersectIterator($iterator, ...$iterators))->withAssociative(...$callbacks);
     }
@@ -238,6 +260,9 @@ if (!function_exists('iterator_intersect_ukey')) {
     function iterator_intersect_ukey(): IntersectIterator
     {
         [$iterator, $iterators, $callbacks] = IntersectIterator::extractParams(func_get_args());
+        if (count($callbacks) === 0) {
+            throw new \InvalidArgumentException('No key callback provided.');
+        }
 
         return (new IntersectIterator($iterator, ...$iterators))->withKey(...$callbacks);
     }
@@ -254,6 +279,9 @@ if (!function_exists('iterator_uintersect')) {
     function iterator_uintersect(): IntersectIterator
     {
         [$iterator, $iterators, $callbacks] = IntersectIterator::extractParams(func_get_args());
+        if (count($callbacks) === 0) {
+            throw new \InvalidArgumentException('No intersect callback provided.');
+        }
 
         return (new IntersectIterator($iterator, ...$iterators))->withCallback(...$callbacks);
     }
@@ -270,6 +298,9 @@ if (!function_exists('iterator_uintersect_assoc')) {
     function iterator_uintersect_assoc(): IntersectIterator
     {
         [$iterator, $iterators, $callbacks] = IntersectIterator::extractParams(func_get_args());
+        if (count($callbacks) === 0) {
+            throw new \InvalidArgumentException('No intersect callback provided.');
+        }
 
         return (new IntersectIterator($iterator, ...$iterators))
             ->withCallback(...$callbacks)
@@ -289,6 +320,14 @@ if (!function_exists('iterator_uintersect_uassoc')) {
     function iterator_uintersect_uassoc(): IntersectIterator
     {
         [$iterator, $iterators, $callbacks] = IntersectIterator::extractParams(func_get_args());
+
+        if (count($callbacks) === 0) {
+            throw new \InvalidArgumentException('No intersect callback provided.');
+        }
+
+        if (count($callbacks) === 1) {
+            throw new \InvalidArgumentException('No associative callback provided.');
+        }
 
         return (new IntersectIterator($iterator, ...$iterators))
             ->withCallback($callbacks[0])

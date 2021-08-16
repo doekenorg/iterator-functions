@@ -23,7 +23,7 @@ class MapIterator extends \IteratorIterator
         try {
             $function = new \ReflectionFunction(\Closure::fromCallable($callback));
         } catch (\ReflectionException $e) {
-            throw new \RuntimeException($e->getMessage(), (int) $e->getCode(), $e);
+            return; // Will not happen.
         }
 
         if (!$function->isVariadic() && $function->getNumberOfParameters() !== count($iterators)) {

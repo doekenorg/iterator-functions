@@ -54,21 +54,21 @@ class DiffIterator extends \FilterIterator
 
     /**
      * Extracts the params from a function call.
-     * @param array $arguments The provided arguments.
+     * @param array $params The provided arguments.
      * @return mixed The params.
      */
-    public static function extractParams(array $arguments): array
+    final public static function extractParams(array $params): array
     {
         $result = ['iterator' => null, 'iterators' => [], 'callbacks' => []];
 
-        $iterator = array_shift($arguments);
+        $iterator = array_shift($params);
         if (!$iterator instanceof \Iterator) {
             throw new \InvalidArgumentException('First parameter must be an iterator.');
         }
 
         $result['iterator'] = $iterator;
 
-        while (($argument = array_shift($arguments))) {
+        while (($argument = array_shift($params))) {
             if (!$argument instanceof \Iterator && !is_callable($argument)) {
                 throw new \InvalidArgumentException(sprintf(
                     'Argument should be an iterator or callback; "%s" given.',
@@ -78,7 +78,15 @@ class DiffIterator extends \FilterIterator
             $type = $argument instanceof \Iterator
                 ? 'iterators'
                 : 'callbacks';
+
+            if ($type === 'iterators' && count($result['callbacks']) !== 0) {
+                throw new \InvalidArgumentException('An iterator may not be provided after a callback.');
+            }
             $result[$type][] = $argument;
+        }
+
+        if (count($result['iterators']) === 0) {
+            throw new \InvalidArgumentException('There is no iterator to match against.');
         }
 
         return array_values($result);

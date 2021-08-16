@@ -14,6 +14,17 @@ it('intersects two iterators', function () {
     expect(iterator_to_array($iterator_intersect_2))->toBe([0 => 2, 1 => 3]);
 });
 
+it('compares via string cast', function () {
+    $iterator_1 = new ArrayIterator([1, '02', 3]);
+    $iterator_2 = new ArrayIterator([2, 3, 4]);
+
+    $iterator_intersect = iterator_intersect($iterator_1, $iterator_2);
+    $iterator_intersect_2 = iterator_intersect($iterator_2, $iterator_1);
+
+    expect(iterator_to_array($iterator_intersect))->toBe([1 => '02', 2 => 3]);
+    expect(iterator_to_array($iterator_intersect_2))->toBe([0 => 2, 1 => 3]);
+});
+
 it('intersects more than two iterators', function () {
     $iterator_1 = new ArrayIterator([1, 2, 3, 'one', 'two', 'three']);
     $iterator_2 = new ArrayIterator([2, 3, 4]);
@@ -153,4 +164,3 @@ it('can diff using a callback and a key validation using a callback', function (
     $result = iterator_uintersect_uassoc($iterator_1, $iterator_2, $value_compare, $key_compare);
     expect(iterator_to_array($result))->toBe(['apple']);
 });
-
