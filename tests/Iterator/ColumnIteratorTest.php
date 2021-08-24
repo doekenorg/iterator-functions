@@ -1,6 +1,6 @@
 <?php
 
-use \DoekeNorg\IteratorFunctions\Iterator\ColumnIterator;
+use DoekeNorg\IteratorFunctions\Iterator\ColumnIterator;
 
 /**
  * Tests for {@see ColumnIterator}.

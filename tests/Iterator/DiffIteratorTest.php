@@ -1,6 +1,6 @@
 <?php
 
-use \DoekeNorg\IteratorFunctions\Iterator\DiffIterator;
+use DoekeNorg\IteratorFunctions\Iterator\DiffIterator;
 
 /**
  * Tests for {@see DiffIterator}.
@@ -26,19 +26,19 @@ it('can extract params form a function', function () {
         $iterator = new ArrayIterator(),
         $iterator_clone = clone $iterator,
         $iterator_clone,
-        $callable = fn() => '',
+        $callable = fn () => '',
         $callable,
     ]);
 
     expect($result)->toBe([
         $iterator,
         [$iterator_clone, $iterator_clone],
-        [$callable, $callable]
+        [$callable, $callable],
     ]);
 });
 
 it('throws an exception if the first parameter is not an iterator', function () {
-    DiffIterator::extractParams([fn() => '']);
+    DiffIterator::extractParams([fn () => '']);
 })->expectExceptionObject(new \InvalidArgumentException('First parameter must be an iterator.'));
 
 it('throws an exception if a parameter is not a callable or iterator.', function () {
@@ -50,5 +50,5 @@ it('throws an exception if there is no iterator to compare against.', function (
 })->expectExceptionObject(new \InvalidArgumentException('There is no iterator to match against.'));
 
 it('throws an exception if an iterator is added after a callback.', function () {
-    DiffIterator::extractParams([new ArrayIterator(), new ArrayIterator(), fn() => '', new ArrayIterator()]);
+    DiffIterator::extractParams([new ArrayIterator(), new ArrayIterator(), fn () => '', new ArrayIterator()]);
 })->expectExceptionObject(new \InvalidArgumentException('An iterator may not be provided after a callback.'));

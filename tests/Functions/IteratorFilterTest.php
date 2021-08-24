@@ -5,7 +5,7 @@
  */
 it('filters an iterator', function () {
     $iterator = new \ArrayIterator(['one', 'two', 'three']);
-    $filtered = iterator_filter($iterator, fn(string $value) => $value !== 'two');
+    $filtered = iterator_filter($iterator, fn (string $value) => $value !== 'two');
     expect(iterator_to_array($filtered))->toBe([0 => 'one', 2 => 'three']);
 });
 
@@ -15,7 +15,7 @@ it('filters empty by default', function () {
     expect(iterator_to_array($filtered))->toBe([0 => 'one', 4 => 'three']);
 });
 
-it('returns a CallbackFilterIterator', function() {
+it('returns a CallbackFilterIterator', function () {
     $iterator = iterator_filter(new \ArrayIterator());
     expect($iterator)->toBeInstanceOf(\CallbackFilterIterator::class);
 });

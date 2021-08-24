@@ -130,6 +130,7 @@ it('can intersect using a callback and a key validation', function () {
         if ($value_1 === 'apple' && $value_2 === 'orange') {
             return 0; // nothing to compare, same fruit
         }
+
         return $value_1 <=> $value_2;
     };
 
@@ -148,6 +149,7 @@ it('can diff using a callback and a key validation using a callback', function (
         if ($value_1 === 'apple' && $value_2 === 'orange') {
             return 0; // nothing to compare, same fruit
         }
+
         return $value_1 <=> $value_2;
     };
 
@@ -155,6 +157,7 @@ it('can diff using a callback and a key validation using a callback', function (
         if ($value_1 === 0 && $value_2 === 1) {
             return 0; // nothing to compare, same fruit
         }
+
         return $value_1 <=> $value_2;
     };
 

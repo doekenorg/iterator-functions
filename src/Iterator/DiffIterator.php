@@ -160,6 +160,6 @@ class DiffIterator extends \FilterIterator
      */
     final protected static function defaultCompare(): callable
     {
-        return static fn($current, $compare) => $current <=> $compare;
+        return static fn ($current, $compare) => $current <=> $compare;
     }
 }

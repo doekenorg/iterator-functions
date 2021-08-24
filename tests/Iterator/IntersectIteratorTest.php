@@ -1,6 +1,6 @@
 <?php
 
-use \DoekeNorg\IteratorFunctions\Iterator\DiffIterator;
+use DoekeNorg\IteratorFunctions\Iterator\DiffIterator;
 use DoekeNorg\IteratorFunctions\Iterator\IntersectIterator;
 
 /**
