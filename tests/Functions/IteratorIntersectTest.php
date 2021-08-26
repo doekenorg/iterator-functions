@@ -167,3 +167,24 @@ it('can diff using a callback and a key validation using a callback', function (
     $result = iterator_uintersect_uassoc($iterator_1, $iterator_2, $value_compare, $key_compare);
     expect(iterator_to_array($result))->toBe(['apple']);
 });
+
+test('exceptions are thrown', function (string $function, string $expected_message, array $args) {
+    $message = '';
+
+    // Would be nice if this could be Pest native
+    try {
+        $function(...$args);
+    } catch (\InvalidArgumentException $exception) {
+        $message = $exception->getMessage();
+    }
+
+    expect($message)->toBe($expected_message);
+})
+    ->with([
+               ['iterator_intersect_uassoc', 'No associative callback provided.', [$it = new ArrayIterator(), $it]],
+               ['iterator_intersect_ukey', 'No key callback provided.', [$it, $it]],
+               ['iterator_uintersect', 'No intersect callback provided.', [$it, $it]],
+               ['iterator_uintersect_assoc', 'No intersect callback provided.', [$it, $it]],
+               ['iterator_uintersect_uassoc', 'No intersect callback provided.', [$it, $it]],
+               ['iterator_uintersect_uassoc', 'No associative callback provided.', [$it, $it, fn () => '']],
+           ]);

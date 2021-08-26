@@ -150,3 +150,24 @@ it('can diff using a callback and a key validation using a callback', function (
     $result = iterator_udiff_uassoc($iterator_1, $iterator_2, $value_compare, $key_compare);
     expect(iterator_to_array($result))->toBe([1 => 'pear', 2 => 'lime']);
 });
+
+test('exceptions are thrown', function (string $function, string $expected_message, array $args) {
+    $message = '';
+
+    // Would be nice if this could be Pest native
+    try {
+        $function(...$args);
+    } catch (\InvalidArgumentException $exception) {
+        $message = $exception->getMessage();
+    }
+
+    expect($message)->toBe($expected_message);
+})
+    ->with([
+               ['iterator_diff_uassoc', 'No associative callback provided.', [$it = new ArrayIterator(), $it]],
+               ['iterator_diff_ukey', 'No key callback provided.', [$it, $it]],
+               ['iterator_udiff', 'No diff callback provided.', [$it, $it]],
+               ['iterator_udiff_assoc', 'No diff callback provided.', [$it, $it]],
+               ['iterator_udiff_uassoc', 'No diff callback provided.', [$it, $it]],
+               ['iterator_udiff_uassoc', 'No associative callback provided.', [$it, $it, $callback = fn () => '']],
+           ]);

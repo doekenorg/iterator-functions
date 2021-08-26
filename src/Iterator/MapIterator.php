@@ -22,9 +22,11 @@ class MapIterator extends \IteratorIterator
     {
         try {
             $function = new \ReflectionFunction(\Closure::fromCallable($callback));
+            // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             return; // Will not happen.
         }
+        // @codeCoverageIgnoreEnd
 
         if (!$function->isVariadic() && $function->getNumberOfParameters() !== count($iterators)) {
             throw new \InvalidArgumentException('The callback needs as many arguments as provided iterators.');
