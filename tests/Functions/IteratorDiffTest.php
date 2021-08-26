@@ -152,16 +152,7 @@ it('can diff using a callback and a key validation using a callback', function (
 });
 
 test('exceptions are thrown', function (string $function, string $expected_message, array $args) {
-    $message = '';
-
-    // Would be nice if this could be Pest native
-    try {
-        $function(...$args);
-    } catch (\InvalidArgumentException $exception) {
-        $message = $exception->getMessage();
-    }
-
-    expect($message)->toBe($expected_message);
+    expect(static fn () => $function(...$args))->toThrow($expected_message);
 })
     ->with([
                ['iterator_diff_uassoc', 'No associative callback provided.', [$it = new ArrayIterator(), $it]],

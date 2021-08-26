@@ -6,8 +6,9 @@
         "php": "^7.4|^8.0"
     },
     "require-dev": {
-        "pestphp/pest": "^1.15",
-        "vimeo/psalm": "^4.9"
+        "pestphp/pest": "^1.17",
+        "vimeo/psalm": "^4.9",
+        "phpbench/phpbench": "^1.1"
     },
     "autoload": {
         "psr-4": {
@@ -16,6 +17,11 @@
         "files": [
             "src/iterator_functions.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "DoekeNorg\\IteratorFunctions\\Tests\\": "tests"
+        }
     },
     "license": "MIT",
     "authors": [

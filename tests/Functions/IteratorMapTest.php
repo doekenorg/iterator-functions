@@ -1,6 +1,7 @@
 <?php
 
 use DoekeNorg\IteratorFunctions\Iterator\MapIterator;
+use DoekeNorg\IteratorFunctions\Tests\Assets\Functions;
 
 /**
  * Tests for {@see iterator_map()}.
@@ -19,3 +20,12 @@ it('maps an array as an iterator', function () {
     expect($map_iterator)->toBeInstanceOf(MapIterator::class);
     expect(iterator_to_array($map_iterator))->toBe(['ONE', 'TWO', 'THREE']);
 });
+
+it('maps with a callback array', function () {
+    $functions = new Functions();
+    $map_iterator = iterator_map([$functions, 'strtoupper'], ['one', 'two', 'three']);
+
+    expect($map_iterator)->toBeInstanceOf(MapIterator::class);
+    expect(iterator_to_array($map_iterator))->toBe(['ONE', 'TWO', 'THREE']);
+});
+
