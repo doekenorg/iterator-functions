@@ -33,12 +33,12 @@ it('maps multiple iterators', function () {
 
 it('throws an exception when the callback arguments do not match', function () {
     $iterator = new \ArrayIterator();
-    new MapIterator(static fn($one, $two) => '', $iterator);
+    new MapIterator(static fn ($one, $two) => '', $iterator);
 })->throws('The callback needs as many arguments as provided iterators.');
 
 it('doesn\'t throw an exception when the callback is variadic', function () {
     $iterator = new \ArrayIterator([1, 2]);
-    $map_iterator = new MapIterator(static fn(...$values) => implode('.', $values), $iterator, clone $iterator);
+    $map_iterator = new MapIterator(static fn (...$values) => implode('.', $values), $iterator, clone $iterator);
     expect(iterator_to_array($map_iterator))->toBe(['1.1', '2.2']);
 });
 

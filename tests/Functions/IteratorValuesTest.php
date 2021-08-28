@@ -12,7 +12,7 @@ it('returns only the values of an iterator', function () {
     expect(iterator_to_array($iterator_values))->toBe([1, 2]);
 });
 
-it('returns a ValuesIterator', function() {
+it('returns a ValuesIterator', function () {
     $iterator_values = iterator_values(new ArrayIterator());
     expect($iterator_values)->toBeInstanceOf(ValuesIterator::class);
 });

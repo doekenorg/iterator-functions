@@ -17,4 +17,3 @@ it('walks an iterator', function () {
     expect($objects[0]->title)->toBe('Title 1.0.one.two');
     expect($objects[1]->title)->toBe('Title 2.1.one.two');
 });
-
