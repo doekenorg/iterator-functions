@@ -5,7 +5,7 @@ namespace DoekeNorg\IteratorFunctions\Iterator;
 /**
  * Iterator that returns a single column for the iteration array / object.
  */
-class ColumnIterator extends \IteratorIterator
+class ColumnIterator extends \FilterIterator
 {
     /**
      * The column to return.
@@ -18,6 +18,12 @@ class ColumnIterator extends \IteratorIterator
      * @var string|int|null
      */
     private $index_key;
+
+    /**
+     * The internal key count.
+     * @var int
+     */
+    private int $count = 0;
 
     /**
      * Creates the iterator.
@@ -36,10 +42,22 @@ class ColumnIterator extends \IteratorIterator
     /**
      * @inheritdoc
      */
+    public function next(): void
+    {
+        parent::next();
+
+        if (isset($this->index_key) && !$this->column($this->index_key)) {
+            ++$this->count;
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function key()
     {
         if (isset($this->index_key)) {
-            return $this->column($this->index_key);
+            return $this->column($this->index_key) ?? $this->count;
         }
 
         return parent::key();
@@ -66,13 +84,25 @@ class ColumnIterator extends \IteratorIterator
     {
         $iteration = parent::current();
         if (is_array($iteration) || $iteration instanceof \ArrayAccess) {
-            return $iteration[$key];
+            return $iteration[$key] ?? null;
         }
 
         if (is_object($iteration)) {
-            return $iteration->{$key};
+            return $iteration->{$key} ?? null;
         }
 
         return null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function accept(): bool
+    {
+        if (isset($this->column_key)) {
+            return $this->column($this->column_key) !== null;
+        }
+
+        return true;
     }
 }

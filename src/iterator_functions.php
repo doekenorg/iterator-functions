@@ -31,7 +31,7 @@ if (!function_exists('iterator_filter')) {
      */
     function iterator_filter(Iterator $iterator, ?callable $callback = null): \CallbackFilterIterator
     {
-        return new \CallbackFilterIterator($iterator, $callback ?? static fn($value) => !empty($value));
+        return new \CallbackFilterIterator($iterator, $callback ?? static fn ($value) => !empty($value));
     }
 }
 
