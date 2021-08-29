@@ -29,5 +29,9 @@
             "name": "Doeke Norg",
             "email": "doekenorg@gmail.com"
         }
-    ]
+    ],
+    "scripts": {
+        "test": "./vendor/bin/pest",
+        "fix": "php-cs-fixer fix --config=.php_cs.dist.php --allow-risky=yes"
+    }
 }
