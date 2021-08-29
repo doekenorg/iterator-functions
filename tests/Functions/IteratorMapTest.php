@@ -21,7 +21,7 @@ it('maps an array as an iterator', function () {
     expect(iterator_to_array($map_iterator))->toBe(['ONE', 'TWO', 'THREE']);
 });
 
-it('maps with a callback array', function () {
+it('maps with a callback via array params', function () {
     $functions = new Functions();
     $map_iterator = iterator_map([$functions, 'strtoupper'], ['one', 'two', 'three']);
 
