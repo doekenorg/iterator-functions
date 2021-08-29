@@ -17,6 +17,7 @@ it('returns a single column for an iterator with arrays', function () {
 
     expect(iterator_to_array($column_iterator))->toBe(['Title 1', 'Title 2']);
 });
+
 it('returns a ColumnIterator', function () {
     $iterator = new ArrayIterator();
     $column_iterator = iterator_column($iterator, 'title');

@@ -1,7 +1,9 @@
 <?php
 
 use DoekeNorg\IteratorFunctions\Iterator\ColumnIterator;
+use DoekeNorg\IteratorFunctions\Iterator\DiffIterator;
 use DoekeNorg\IteratorFunctions\Iterator\FlipIterator;
+use DoekeNorg\IteratorFunctions\Iterator\IntersectIterator;
 use DoekeNorg\IteratorFunctions\Iterator\KeysIterator;
 use DoekeNorg\IteratorFunctions\Iterator\MapIterator;
 use DoekeNorg\IteratorFunctions\Iterator\ValuesIterator;
@@ -19,6 +21,149 @@ if (!function_exists('iterator_column')) {
     }
 }
 
+if (!function_exists('iterator_diff')) {
+    /**
+     * Computes the difference of iterators.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @return DiffIterator An iterator with the difference.
+     */
+    function iterator_diff(\Iterator $iterator, \Iterator ...$iterators): DiffIterator
+    {
+        return new DiffIterator($iterator, ...$iterators);
+    }
+}
+
+if (!function_exists('iterator_diff_assoc')) {
+    /**
+     * Computes the difference of iterators with extra key check.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @return DiffIterator An iterator with the difference.
+     */
+    function iterator_diff_assoc(\Iterator $iterator, \Iterator ...$iterators): DiffIterator
+    {
+        return (new DiffIterator($iterator, ...$iterators))->withAssociative();
+    }
+}
+
+if (!function_exists('iterator_diff_key')) {
+    /**
+     * Computes the difference of iterators by key check.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @return DiffIterator An iterator with the difference.
+     */
+    function iterator_diff_key(\Iterator $iterator, \Iterator ...$iterators): DiffIterator
+    {
+        return (new DiffIterator($iterator, ...$iterators))->withKey();
+    }
+}
+
+if (!function_exists('iterator_diff_uassoc')) {
+    /**
+     * Computes the difference of iterators with extra by key check using a callback.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @param callable $callback The callback that computes the difference on the keys. Must return an `int`.
+     * @return DiffIterator An iterator with the difference.
+     */
+    function iterator_diff_uassoc(): DiffIterator
+    {
+        [$iterator, $iterators, $callbacks] = DiffIterator::extractParams(func_get_args());
+        if (count($callbacks) === 0) {
+            throw new \InvalidArgumentException('No associative callback provided.');
+        }
+
+        return (new DiffIterator($iterator, ...$iterators))->withAssociative(...$callbacks);
+    }
+}
+
+if (!function_exists('iterator_diff_ukey')) {
+    /**
+     * Computes the difference of iterators by key check using a callback.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @param callable $callback The callback that computes the difference on the keys. Must return an `int`.
+     * @return DiffIterator An iterator with the difference.
+     */
+    function iterator_diff_ukey(): DiffIterator
+    {
+        [$iterator, $iterators, $callbacks] = DiffIterator::extractParams(func_get_args());
+        if (count($callbacks) === 0) {
+            throw new \InvalidArgumentException('No key callback provided.');
+        }
+
+        return (new DiffIterator($iterator, ...$iterators))->withKey(...$callbacks);
+    }
+}
+
+if (!function_exists('iterator_udiff')) {
+    /**
+     * Computes the difference of iterators using a callback.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @param callable(mixed $current_value, mixed $compare_value):int The callback to perform.
+     * @return DiffIterator An iterator with the difference.
+     */
+    function iterator_udiff(): DiffIterator
+    {
+        [$iterator, $iterators, $callbacks] = DiffIterator::extractParams(func_get_args());
+        if (count($callbacks) === 0) {
+            throw new \InvalidArgumentException('No diff callback provided.');
+        }
+
+        return (new DiffIterator($iterator, ...$iterators))->withCallback(...$callbacks);
+    }
+}
+
+if (!function_exists('iterator_udiff_assoc')) {
+    /**
+     * Computes the difference of iterators using a callback.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @param callable(mixed $current_value, mixed $compare_value):int The callback to perform.
+     * @return DiffIterator An iterator with the difference.
+     */
+    function iterator_udiff_assoc(): DiffIterator
+    {
+        [$iterator, $iterators, $callbacks] = DiffIterator::extractParams(func_get_args());
+        if (count($callbacks) === 0) {
+            throw new \InvalidArgumentException('No diff callback provided.');
+        }
+
+        return (new DiffIterator($iterator, ...$iterators))
+            ->withCallback(...$callbacks)
+            ->withAssociative();
+    }
+}
+
+if (!function_exists('iterator_udiff_uassoc')) {
+    /**
+     * Computes the difference of iterators using a callback.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @param callable(mixed $current_value, mixed $compare_value):int The callback to perform.
+     * @param callable(mixed $current_key, mixed $compare_key):int The callback to perform.
+     * @return DiffIterator An iterator with the difference.
+     */
+    function iterator_udiff_uassoc(): DiffIterator
+    {
+        [$iterator, $iterators, $callbacks] = DiffIterator::extractParams(func_get_args());
+        if (count($callbacks) === 0) {
+            throw new \InvalidArgumentException('No diff callback provided.');
+        }
+
+        if (count($callbacks) === 1) {
+            throw new \InvalidArgumentException('No associative callback provided.');
+        }
+
+        return (new DiffIterator($iterator, ...$iterators))
+            ->withCallback($callbacks[0])
+            ->withAssociative($callbacks[1]);
+    }
+}
+
 if (!function_exists('iterator_filter')) {
     /**
      * Filters elements off an iterator using a callback function.
@@ -31,7 +176,7 @@ if (!function_exists('iterator_filter')) {
      */
     function iterator_filter(Iterator $iterator, ?callable $callback = null): \CallbackFilterIterator
     {
-        return new \CallbackFilterIterator($iterator, $callback ?? static fn ($value) => !empty($value));
+        return new \CallbackFilterIterator($iterator, $callback ?? static fn ($value): bool => !empty($value));
     }
 }
 
@@ -44,6 +189,149 @@ if (!function_exists('iterator_flip')) {
     function iterator_flip(Iterator $iterator): FlipIterator
     {
         return new FlipIterator($iterator);
+    }
+}
+
+if (!function_exists('iterator_intersect')) {
+    /**
+     * Computes the difference between iterators.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @return IntersectIterator An iterator with the intersection.
+     */
+    function iterator_intersect(\Iterator $iterator, \Iterator ...$iterators): IntersectIterator
+    {
+        return new IntersectIterator($iterator, ...$iterators);
+    }
+}
+
+if (!function_exists('iterator_intersect_assoc')) {
+    /**
+     * Computes the difference between iterators with extra key check.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @return IntersectIterator An iterator with the intersection.
+     */
+    function iterator_intersect_assoc(\Iterator $iterator, \Iterator ...$iterators): IntersectIterator
+    {
+        return (new IntersectIterator($iterator, ...$iterators))->withAssociative();
+    }
+}
+if (!function_exists('iterator_intersect_key')) {
+    /**
+     * Computes the intersection of iterators by key check.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @return DiffIterator An iterator with the difference.
+     */
+    function iterator_intersect_key(\Iterator $iterator, \Iterator ...$iterators): DiffIterator
+    {
+        return (new IntersectIterator($iterator, ...$iterators))->withKey();
+    }
+}
+
+if (!function_exists('iterator_intersect_uassoc')) {
+    /**
+     * Computes the difference between iterators with extra key check.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @param callable(mixed $current, mixed $compare):int $callback The callback to use for comparing.
+     * @return IntersectIterator An iterator with the intersection.
+     */
+    function iterator_intersect_uassoc(): IntersectIterator
+    {
+        [$iterator, $iterators, $callbacks] = IntersectIterator::extractParams(func_get_args());
+        if (count($callbacks) === 0) {
+            throw new \InvalidArgumentException('No associative callback provided.');
+        }
+
+        return (new IntersectIterator($iterator, ...$iterators))->withAssociative(...$callbacks);
+    }
+}
+
+if (!function_exists('iterator_intersect_ukey')) {
+    /**
+     * Computes the intersection of iterators by key check using a callback.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @param callable(mixed $current, mixed $compare):int $callback The callback to use for comparing.
+     * @return IntersectIterator An iterator with the intersection.
+     */
+    function iterator_intersect_ukey(): IntersectIterator
+    {
+        [$iterator, $iterators, $callbacks] = IntersectIterator::extractParams(func_get_args());
+        if (count($callbacks) === 0) {
+            throw new \InvalidArgumentException('No key callback provided.');
+        }
+
+        return (new IntersectIterator($iterator, ...$iterators))->withKey(...$callbacks);
+    }
+}
+
+if (!function_exists('iterator_uintersect')) {
+    /**
+     * Computes the intersection of iterators using a callback.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @param callable(mixed $current_value, mixed $compare_value):int The callback to perform.
+     * @return IntersectIterator An iterator with the intersection.
+     */
+    function iterator_uintersect(): IntersectIterator
+    {
+        [$iterator, $iterators, $callbacks] = IntersectIterator::extractParams(func_get_args());
+        if (count($callbacks) === 0) {
+            throw new \InvalidArgumentException('No intersect callback provided.');
+        }
+
+        return (new IntersectIterator($iterator, ...$iterators))->withCallback(...$callbacks);
+    }
+}
+
+if (!function_exists('iterator_uintersect_assoc')) {
+    /**
+     * Computes the intersection of iterators using a callback.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @param callable(mixed $current_value, mixed $compare_value):int The callback to perform.
+     * @return IntersectIterator An iterator with the intersection.
+     */
+    function iterator_uintersect_assoc(): IntersectIterator
+    {
+        [$iterator, $iterators, $callbacks] = IntersectIterator::extractParams(func_get_args());
+        if (count($callbacks) === 0) {
+            throw new \InvalidArgumentException('No intersect callback provided.');
+        }
+
+        return (new IntersectIterator($iterator, ...$iterators))
+            ->withCallback(...$callbacks)
+            ->withAssociative();
+    }
+}
+
+if (!function_exists('iterator_uintersect_uassoc')) {
+    /**
+     * Computes the intersection of iterators using a callback on the value and the key.
+     * @param \Iterator $iterator The iterator to compare from.
+     * @param \Iterator ...$iterators The iterators to compare against.
+     * @param callable(mixed $current_value, mixed $compare_value):int The callable to perform on the value.
+     * @param callable(mixed $current_key, mixed $compare_key):int The callback to perform on the key.
+     * @return IntersectIterator An iterator with the difference.
+     */
+    function iterator_uintersect_uassoc(): IntersectIterator
+    {
+        [$iterator, $iterators, $callbacks] = IntersectIterator::extractParams(func_get_args());
+
+        if (count($callbacks) === 0) {
+            throw new \InvalidArgumentException('No intersect callback provided.');
+        }
+
+        if (count($callbacks) === 1) {
+            throw new \InvalidArgumentException('No associative callback provided.');
+        }
+
+        return (new IntersectIterator($iterator, ...$iterators))
+            ->withCallback($callbacks[0])
+            ->withAssociative($callbacks[1]);
     }
 }
 
