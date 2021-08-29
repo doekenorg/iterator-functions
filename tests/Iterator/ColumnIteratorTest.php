@@ -65,7 +65,7 @@ it('contains integer keys when the key is missing', function () {
     expect($result_array)->toBe(iterator_to_array($result_iterator));
 });
 
-it('skips empty values the value-key is missing', function () {
+it('skips empty values when the value-key is missing', function () {
     // make sure array_column and iterator_column act the same
     $array = [['age' => 32], ['name' => 'Steven', 'age' => 33], ['age' => 45]];
     $result_array = array_column($array, 'name', 'age');
