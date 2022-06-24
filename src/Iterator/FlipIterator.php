@@ -5,21 +5,30 @@ namespace DoekeNorg\IteratorFunctions\Iterator;
 /**
  * Iterator that flips the key and the value of the current iteration.
  */
-class FlipIterator extends \IteratorIterator
+class FlipIterator implements \IteratorAggregate
 {
     /**
-     * @inheritdoc
+     * The inner iterator.
+     * @var \Traversable
      */
-    public function key()
+    private \Traversable $iterator;
+
+    /**
+     * Creates the iterator.
+     * @param \Traversable $iterator The inner iterator.
+     */
+    public function __construct(\Traversable $iterator)
     {
-        return parent::current();
+        $this->iterator = $iterator;
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function current()
+    public function getIterator(): \Generator
     {
-        return parent::key();
+        foreach ($this->iterator as $key => $value) {
+            yield $value => $key;
+        }
     }
 }

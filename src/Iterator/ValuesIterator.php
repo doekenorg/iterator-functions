@@ -5,44 +5,30 @@ namespace DoekeNorg\IteratorFunctions\Iterator;
 /**
  * Iterator that returns only the values of the provided iterator.
  */
-class ValuesIterator extends \IteratorIterator
+class ValuesIterator implements \IteratorAggregate
 {
     /**
-     * The internal key count.
-     * @var int
+     * The inner iterator.
+     * @var \Traversable
      */
-    private int $count = 0;
+    private \Traversable $iterator;
 
     /**
-     * @inheritdoc
+     * Creates the iterator.
+     * @param \Traversable $iterator The inner iterator.
      */
-    public function key(): int
+    public function __construct(\Traversable $iterator)
     {
-        return $this->count;
+        $this->iterator = $iterator;
     }
 
     /**
-     * @inheritdoc
-     *
-     * Increases the internal count.
-     *
+     * @inheritDoc
      */
-    public function next(): void
+    public function getIterator(): \Generator
     {
-        parent::next();
-        ++$this->count;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * Resets the internal count.
-     *
-     */
-    public function rewind(): void
-    {
-        parent::rewind();
-
-        $this->count = 0;
+        foreach ($this->iterator as $value) {
+            yield $value;
+        }
     }
 }
