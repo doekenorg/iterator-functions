@@ -24,12 +24,14 @@ jobs:
           coverage: none
 
       - name: Cache composer dependencies
+        id: cache-run
         uses: actions/cache@v2
         with:
           path: vendor
           key: composer-${{ matrix.php }}-${{ matrix.os }}-${{ hashFiles('composer.lock') }}
 
       - name: Install dependencies
+        if: steps.cache-run.outputs.cache-hit != 'true'
         run: composer update --prefer-dist --no-interaction
 
       - name: Execute tests
