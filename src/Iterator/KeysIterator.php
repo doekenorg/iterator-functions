@@ -5,14 +5,30 @@ namespace DoekeNorg\IteratorFunctions\Iterator;
 /**
  * Iterator that returns only the keys of the provided iterator.
  */
-class KeysIterator extends ValuesIterator
+class KeysIterator implements \IteratorAggregate
 {
     /**
-     * @inheritdoc
-     * @psalm-suppress UndefinedInterfaceMethod Psalm doesn't understand the inner iterator is an {@see \Iterator}.
+     * The inner iterator.
+     * @var \Traversable
      */
-    public function current()
+    private \Traversable $iterator;
+
+    /**
+     * Creates the iterator.
+     * @param \Traversable $iterator The inner iterator.
+     */
+    public function __construct(\Traversable $iterator)
     {
-        return $this->getInnerIterator()->key();
+        $this->iterator = $iterator;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getIterator(): \Generator
+    {
+        foreach ($this->iterator as $key => $_) {
+            yield $key;
+        }
     }
 }

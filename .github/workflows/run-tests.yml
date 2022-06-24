@@ -1,6 +1,6 @@
 name: Tests
 
-on: [push, pull_request]
+on: [ pull_request ]
 
 jobs:
   test:
@@ -8,11 +8,10 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        php: [7.4, 8.0]
-        dependency-version: [prefer-lowest, prefer-stable]
+        os: [ ubuntu-latest, windows-latest ]
+        php: [ 7.4, 8.0 ]
 
-    name: P${{ matrix.php }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
+    name: PHP ${{ matrix.php }} - ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -24,8 +23,16 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: none
 
+      - name: Cache composer dependencies
+        id: cache-run
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: composer-${{ matrix.php }}-${{ matrix.os }}-${{ hashFiles('composer.lock') }}
+
       - name: Install dependencies
-        run: composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
+        if: steps.cache-run.outputs.cache-hit != 'true'
+        run: composer update --prefer-dist --no-interaction
 
       - name: Execute tests
         run: vendor/bin/pest

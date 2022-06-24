@@ -5,13 +5,19 @@ namespace DoekeNorg\IteratorFunctions\Iterator;
 /**
  * Iterator that applies a callback to the elements of the given iterators.
  */
-class MapIterator extends \IteratorIterator
+class MapIterator implements \IteratorAggregate
 {
     /**
      * Callback function to run for each element in each iterator.
      * @var callable
      */
     private $callback;
+
+    /**
+     * The inner iterator.
+     * @var \MultipleIterator
+     */
+    private \MultipleIterator $iterator;
 
     /**
      * Returns the iterator.
@@ -23,41 +29,31 @@ class MapIterator extends \IteratorIterator
         try {
             $function = new \ReflectionFunction(\Closure::fromCallable($callback));
         } catch (\ReflectionException $e) {
-            throw new \RuntimeException($e->getMessage(), (int) $e->getCode(), $e);
+            throw new \RuntimeException($e->getMessage(), (int)$e->getCode(), $e);
         }
 
         if (!$function->isVariadic() && $function->getNumberOfParameters() !== count($iterators)) {
             throw new \InvalidArgumentException('The callback needs as many arguments as provided iterators.');
         }
 
-        $inner = new \MultipleIterator();
+        $this->iterator = new \MultipleIterator();
         foreach ($iterators as $iterator) {
             if (is_array($iterator)) {
                 $iterator = new \ArrayIterator($iterator);
             }
-            $inner->attachIterator($iterator);
+            $this->iterator->attachIterator($iterator);
         }
-
-        parent::__construct($inner);
 
         $this->callback = $callback;
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function key()
+    public function getIterator(): \Generator
     {
-        $keys = parent::key();
-
-        return is_array($keys) ? reset($keys) : parent::key();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function current()
-    {
-        return call_user_func_array($this->callback, parent::current());
+        foreach ($this->iterator as $key => $value) {
+            yield $key[0] => ($this->callback)(...$value);
+        }
     }
 }

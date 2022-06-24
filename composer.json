@@ -17,6 +17,11 @@
             "src/iterator_functions.php"
         ]
     },
+    "autoload-dev": {
+        "psr-4": {
+            "DoekeNorg\\IteratorFunctions\\Tests\\": "tests"
+        }
+    },
     "license": "MIT",
     "authors": [
         {
