@@ -48,7 +48,7 @@ class ColumnIterator implements \IteratorAggregate
      * Retrieves a single column from the current iteration.
      * @param array|\ArrayAccess|object $iteration The iteration.
      * @param int|string $key The key to retrieve from the iteration.
-     * @return mixed|null The value.
+     * @return mixed The value.
      */
     private function getColumn($iteration, $key)
     {
@@ -57,7 +57,7 @@ class ColumnIterator implements \IteratorAggregate
         }
 
         if (is_object($iteration)) {
-            return $iteration->{$key} ?? null;
+            return $iteration->{$key} ?: null;
         }
 
         return null;

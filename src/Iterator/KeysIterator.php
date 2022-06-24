@@ -27,7 +27,7 @@ class KeysIterator implements \IteratorAggregate
      */
     public function getIterator(): \Generator
     {
-        foreach ($this->iterator as $key => $value) {
+        foreach ($this->iterator as $key => $_) {
             yield $key;
         }
     }
